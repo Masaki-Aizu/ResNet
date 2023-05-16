@@ -6,14 +6,14 @@
 - **Residualブロック**により、逆伝搬時、入力誤差をそのまま上位層に伝搬するので、勾配が層を経るごとに小さくなる問題を回避できる。→ 勾配消失なく、従来よりネットワークを深くできる
 - また、残渣学習（$F(x)+x$）を行っているため、XGBのようなアンサンブル学習と同じような効果が生まれている
 ## Residual ブロック
-<img alt="Residual block" sorce=./image/resudual_block.png></img>
+<img alt="Residual block" src=./image/resudual_block.png></img>
 - 残差ブロック（Residual Block）は、残差接続(＝スキップ接続)と加算演算子(+)の2つで構成される
 - ResNetは残差ブロックを直列に多数接続しただけの，シンプル設計の画像認識向けディープニューラルネットワークである
 - 残差接続の連続をうまく活用した残差学習(residual learning)が，論文では提案されたともいえる
 - 残差学習のおかげで，ResNetでは，残差ブロックの各残差層へ微分を分配し，(奥の方の)序盤層へも誤差を逆伝搬できる．これにより，勾配消失・勾配爆発を防いで，序盤の層まで奥の損失をうまく行き渡らせることができる設計となった
 - 残差ブロックn個が，ResNetを構成するが，学習時の逆伝搬時には，この2分岐がn回存在することから，**合計2^n個の伝搬経路が存在する**。よって，逆伝搬時にスキップ接続側ばかり通る経路だと，奥の方の序盤の層の残差関数へも，**大きな微分値を個別に，かつ分散的に伝播しやすくなる**
 - この残差学習の**分散的で，アンサンブル学習的な**トリックのおかげで，深いResNetでも，各残差ブロックがうまく学習されやすくなり，劣化問題なしに収束性もよい学習ができるようになった
-<img alt="Residual block detail" sorce=./image/resudual_block_detail.png></img>
+<img alt="Residual block detail" src=./image/resudual_block_detail.png></img>
 - 残差ブロック(図2-a)では，各畳み込み層のまとまり(2~3層ごと)に対して，並列にスキップ接続(skip connection)(図2-a 青色側)も挿入する
 - スキップ接続側(図2-a 青色領域側)：入力表現を，元の表現のまま(= 恒等写像, Identity Mapping)，別ブランチに分岐させる．
 - 残差写像側(図2-b 赤色側)：畳み込み層などを配置した経路側では，残差写像であるブロック化されてた数層(2~3層でまとめる)を用いて，表現を変化させる．
@@ -26,14 +26,14 @@
 - 精度を出しているニューラルネットワークをより深くしようとして追加したブロックは恒等変換（入ったものと出てくるものがほぼ一緒なもの）になる。つまり、**モデル下位層に対しては、恒等変換っぽいことをして、さらに少しだけ入力をより良い精度が出る特徴マッピングを出力するように学習を行っている**
 - そこで、**恒等変換（ショートカット）を事前に用意し、少しづつ良い精度がでる入力に変換（Resudual畳み込み層）できるよう学習を行えるように考え出されたのが、Residualブロック**
 - テイラー展開のアナロジー（参考）
-<figure><img alt="ResNet analogy" sorce=./image/resnet_analogy.png /><figcaption>従来までは、右項をすべてモデルに学習させ続けようとしていた</figcaption></figure>
-<figure><img alt="ResNet analogy kai" sorce=./image/resnet_analogy_kai.png /><figcaption>Resudualブロックでは、恒等変換の項だけ与え、青部分の項を学習できるようにした</figcaption></figure>
+<figure><img alt="ResNet analogy" src=./image/resnet_analogy.png /><figcaption>従来までは、右項をすべてモデルに学習させ続けようとしていた</figcaption></figure>
+<figure><img alt="ResNet analogy kai" src=./image/resnet_analogy_kai.png /><figcaption>Resudualブロックでは、恒等変換の項だけ与え、青部分の項を学習できるようにした</figcaption></figure>
 ## アンサンブル的解釈
 - 残差を学習するアルゴリズム、勾配ブースティングと似ている
 - 勾配ブースティングとは、**複数の弱学習器を直列につなげて**、個々の弱学習器が、**前の弱学習器の予測結果を合わせたものと、実際の正解ラベルの「差異」を学習する**
 - つまり、それぞれの弱学習器が、前の学習器たちを合わせた予測と正解ラベルの間に計算できる**lossを小さくする方向に動かしていく**。ResNetのResidualブロックも弱学習機のような役割を担っているように考えられる　　
 - 確かに、n個の残差ブロックを持つResNetは、**合計2^n個の伝搬経路が存在し**、これらの経路をとるものたちが次々に加えられて構成されるアーキテクチャを見ると、複数のネットワークが存在しているように見える
-<img alt="Skip expansion" sorce=./image/skip_expansion.png></img>
+<img alt="Skip expansion" src=./image/skip_expansion.png></img>
 - 実際に、**ResNetはいくつかの経路を切られてもほとんど影響を受けず、Residualブロックの入れ替えに対しても影響を受けにくいことがわかった**→アンサンブル学習の特徴
 - 加えて、**学習の際に、学習に寄与している経路は（偏微分による誤差伝搬による）ものは、比較的短い経路を持つものに偏っていること**が実験により判明
 ## トレーニング方法
