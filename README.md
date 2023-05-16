@@ -28,6 +28,7 @@
 - テイラー展開のアナロジー（参考）
 <figure><img alt="ResNet analogy" src=./image/resnet_analogy.png /><figcaption>従来までは、右項をすべてモデルに学習させ続けようとしていた</figcaption></figure>
 <figure><img alt="ResNet analogy kai" src=./image/resnet_analogy_kai.png /><figcaption>Resudualブロックでは、恒等変換の項だけ与え、青部分の項を学習できるようにした</figcaption></figure>
+
 ## アンサンブル的解釈
 - 残差を学習するアルゴリズム、勾配ブースティングと似ている
 - 勾配ブースティングとは、**複数の弱学習器を直列につなげて**、個々の弱学習器が、**前の弱学習器の予測結果を合わせたものと、実際の正解ラベルの「差異」を学習する**
